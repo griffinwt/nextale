@@ -1,4 +1,4 @@
-
+#imports
 import pandas as pd
 import numpy as np
 import requests
@@ -8,6 +8,9 @@ import time
 import random
 import sys
 pd.set_option('display.max_colwidth', None)
+
+from sklearn.metrics.pairwise import pairwise_distances, cosine_distances, cosine_similarity
+from scipy import sparse
 
 import re
 from nltk.corpus import stopwords
@@ -88,3 +91,62 @@ def clean_amazon_data(file_name, new_name):
     print(f'Final size: {sys.getsizeof(df)/1_000_000_000}') # print size of file (in Gigs)
     print(f'Final shape: {df.shape}') #preview shape
     return f'File saved as {new_name}.csv'
+
+
+
+def make_recommender_df(df, name): #returns 2 dataframes, the recommender and the title lookup
+    #drop any null values remaining from cleaning (will only be a handful in concatenated NLP column)
+    df.dropna(inplace=True)
+    #make T/F list for if cs has written more than 1 review for the same product
+    review_bools = df.groupby('customer_id')['product_id'].value_counts()>1
+    
+    #list of customer id numbers for those with more than 1 review for same item
+    xtra_rev_cs = []
+    for key, value in dict(review_bools[review_bools==True]).items():
+        xtra_rev_cs.append({key[0]:key[1]}) #return customer id and product id ONLY
+    
+    #make list of original df indexes corresponding to reviews that need to be dropped
+    rev_indexes_to_drop = []
+    for pair in xtra_rev_cs:
+        for key, value in pair.items():
+            rev_indexes_to_drop.append(  #add index numbers to the empty list
+            df[(df['customer_id'] == key) &    #where customer id is the key from xtra_rev_cs...
+           (df['product_id']==value)].sort_values( #and product id is the value from xtra_rev_cs
+            by='review_date', ascending=False).index[1:] #starting with the SECOND index number
+            )
+    ritd_2 = [] #list for indexes
+    for n in rev_indexes_to_drop:
+        for k in n:
+            ritd_2.append(k)
+    print(f'Dropping {len(ritd_2)} duplicate values.') #print status update for number of duplicates being dropped
+    df.drop(index=ritd_2, inplace=True) #drop all index numbers in list ritd_2
+    
+    #make new dataframe for recommender build
+    df2 = df[['customer_id', 'product_id', 'product_title', 'star_rating']].copy()
+    print(f"Unique customers: {df2['customer_id'].nunique()}") #preview number of unique customers
+    print(f"Unique products: {df2['product_id'].nunique()}") #preview number of unique products
+    
+    unique_prods = list(set(df2['product_title'])) #create list of unique products
+    prod_index = {p:i for i,p in enumerate(unique_prods)} #match unique products with integer values
+    df2['prod_numerical'] = df2['product_title'].apply(lambda x: prod_index[x]) #add column to df2
+    
+    unique_cs = list(set(df2['customer_id'])) #create list of unique customers
+    cs_index = {p:i for i,p in enumerate(unique_cs)} #match unique customers with (smaller) integer values
+    df2['cs_numerical'] = df2['customer_id'].apply(lambda x: cs_index[x]) #add column to df2
+    
+    df2['star_rating'] = df2['star_rating'].astype(np.int8) #convert to take up less memory
+    
+    #create sparse matrix comparing customer ratings and products
+    sparse_reviews = sparse.csr_matrix((df2.star_rating, (df2.prod_numerical, df2.cs_numerical)), dtype=np.int8)
+    print(f'Size of matrix: {sparse_reviews.shape}') #preview size of sparse matrix
+    #get cosine distances between items
+    dists = pairwise_distances(sparse_reviews, metric='cosine')
+    #create recommender df
+    recommender_df = pd.DataFrame(dists,
+                             index=unique_prods,
+                             columns=unique_prods)
+    print(f'Size of Recommender df: {sys.getsizeof(recommender_df)/1_000_000_000} GB') #check size in GB
+    print(f'Size of Lookup df: {sys.getsizeof(df2)/1_000_000_000} GB') #check size in GB
+    recommender_df.to_csv(f'./data/{name}_recommender.csv', index=False) #save file
+    df2.to_csv(f'./data/{name}_lookup.csv', index=False) #save file
+    return f'Operation complete; {name}_recommender.csv and {name}_lookup.csv saved in data folder.'
