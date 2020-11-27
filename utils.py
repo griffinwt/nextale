@@ -94,9 +94,11 @@ def clean_amazon_data(file_name, new_name):
 
 
 
-def make_recommender_df(df, name): #returns 2 dataframes, the recommender and the title lookup
+def make_recommender_df(df): #returns 2 dataframes, the title lookup df and the recommender matrix
     #drop any null values remaining from cleaning (will only be a handful in concatenated NLP column)
     df.dropna(inplace=True)
+    #ensure dates column is in date-time format
+    df['review_date'] = pd.to_datetime(df['review_date'])
     #make T/F list for if cs has written more than 1 review for the same product
     review_bools = df.groupby('customer_id')['product_id'].value_counts()>1
     
@@ -141,12 +143,31 @@ def make_recommender_df(df, name): #returns 2 dataframes, the recommender and th
     print(f'Size of matrix: {sparse_reviews.shape}') #preview size of sparse matrix
     #get cosine distances between items
     dists = pairwise_distances(sparse_reviews, metric='cosine')
+    
     #create recommender df
-    recommender_df = pd.DataFrame(dists,
-                             index=unique_prods,
-                             columns=unique_prods)
-    print(f'Size of Recommender df: {sys.getsizeof(recommender_df)/1_000_000_000} GB') #check size in GB
-    print(f'Size of Lookup df: {sys.getsizeof(df2)/1_000_000_000} GB') #check size in GB
-    recommender_df.to_csv(f'./data/{name}_recommender.csv', index=False) #save file
-    df2.to_csv(f'./data/{name}_lookup.csv', index=False) #save file
-    return f'Operation complete; {name}_recommender.csv and {name}_lookup.csv saved in data folder.'
+    
+    #dists = dists.astype(np.float32) #convert float64 type to float32 to save memory
+    print('Making df dictionary...')
+    rec_cols = unique_prods
+    rec_dict = {}
+    for n in range(len(dists)):  #create dictionary to use in creating sparse data frame
+        rec_dict[rec_cols[n]] = pd.arrays.SparseArray(dists[n], fill_value=1) #do not store values of 1
+    print('Dictionary made - sparse dataframe under construction...')
+    recommender_df_sparse = pd.DataFrame(rec_dict,
+                             index=rec_cols)
+                             #columns=rec_cols)
+    
+    #recommender_df = pd.DataFrame(dists,   #old way (used too much memory)
+                             #index=unique_prods,
+                             #columns=unique_prods)
+    
+    #print(f'Size of Recommender df: {sys.getsizeof(recommender_df)/1_000_000_000} GB') #check size in GB                   
+    print(f'Size of Recommender df: {sys.getsizeof(recommender_df_sparse)/1_000_000_000} GB') #check size in GB
+    
+    #print(f'Size of Lookup df: {sys.getsizeof(df2)/1_000_000_000} GB') #check size in GB
+    #recommender_df.to_csv(f'./data/{name}_recommender.csv', index=False) #save file
+    #df2.to_csv(f'./data/{name}_lookup.csv', index=False) #save file
+    #return f'Operation complete; {name}_recommender.csv and {name}_lookup.csv saved in data folder.'
+    
+    #return recommender_df
+    return recommender_df_sparse
