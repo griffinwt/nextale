@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Recommender</title>
+</head>
+<body>
+<h2>Welcome to Will's Recommender System!</h2>
+<h3>This model will recommend items based on Amazon product reviews written and related to products which were for sale from 1995-2015. The recommender will return the 10 highest rated items by users who also highly rated the item for which you searched. There is also an optional parameter to add a keyword that you would NOT like to see in your results. For example, you might want to search "superheroes" but not return any results including the word "batman". Or, you may wish to find books similar to "Harry Potter" but that are not simply other "Harry Potter" books.</h3>
+<h3>Please keep in mind that the more specific your search term is, the more accurate your results will be! The model will always choose the item with the highest number of ratings that meets your search parameters, i.e. the most popular item containing that keyword.</h3>
+	<form action="/submit">
+		<fieldset>
+			<legend>Item Categories</legend>
+			<p>
+				<label> Please choose which category you would like to search</label>
+				<select id = "category">
+					<option value="books">Books</option>
+					<option value="movies">Movies</option>
+					<option value="video games">Video Games</option>
+				</select>
+			</p>
+		</fieldset>
+		<p>
+			<label for="cat">Please enter your serach category- "books", "movies", or "video games":</label><br>
+			<input type="text" name="cat">
+		</p>
+		<p>
+			<label for="query">Please enter an item name or title:</label><br>
+			<input type="text" name="query">
+		</p>		
+		<p>
+			<label for="wout">Is there a keyword you would like to EXCLUDE from your results? If so, please enter it here. Otherwise, leave this space blank.</label><br>
+			<input type="text" name="wout">
+		</p>
+		<p><button type="submit">Submit</button></p>
+	</form>
+</body>
+</html>
