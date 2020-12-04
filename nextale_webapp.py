@@ -17,6 +17,9 @@ from scipy import sparse
 from matplotlib import pyplot as plt
 import utils as ut
 
+#read in pickled dataframes
+books_df, books_rec, movies_df, movies_rec, vg_df, vg_rec = pd.read_pickle('./pickles/books_look.pkl'), pd.read_pickle('./pickles/books_rec.pkl'), pd.read_pickle('./pickles/movies_look.pkl'), pd.read_pickle('./pickles/movie_rec.pkl'), pd.read_pickle('./pickles/videog_look.pkl'), pd.read_pickle('./pickles/videog_rec.pkl')
+
 # initialize the flask app
 app = Flask('myApp') #creating an instance of the flask class
 
@@ -39,7 +42,7 @@ def form():
     # use flask's render_template function to display the html page
     return render_template("reco_form.html")
 
-@app.route("/submit")
+@app.route("/submit") #methods=["POST", "GET"]
 def make_predictions():
     # load the form data from the incoming request
     user_input = request.args
@@ -48,11 +51,11 @@ def make_predictions():
     def rec_search(category, query, wout='no'):
 
         if category.lower() == 'video games':
-            lookup, recommender = pd.read_pickle('./pickles/videog_look.pkl'),pd.read_pickle('./pickles/videog_rec.pkl')
+            lookup, recommender = vg_df, vg_rec #pd.read_pickle('./pickles/videog_look.pkl'),pd.read_pickle('./pickles/videog_rec.pkl')
         elif category.lower() == 'movies':
-            lookup, recommender = pd.read_pickle('./pickles/movies_look.pkl'), pd.read_pickle('./pickles/movie_rec.pkl') 
+            lookup, recommender = movies_df, movies_rec #pd.read_pickle('./pickles/movies_look.pkl'), pd.read_pickle('./pickles/movie_rec.pkl') 
         elif category.lower() == 'books':
-            lookup, recommender = pd.read_pickle('./pickles/books_look.pkl'), pd.read_pickle('./pickles/books_rec.pkl')
+            lookup, recommender = books_df, books_rec #pd.read_pickle('./pickles/books_look.pkl'), pd.read_pickle('./pickles/books_rec.pkl')
         else:
             return "Sorry, that wasn't one of the available categories"
 
@@ -72,9 +75,9 @@ def make_predictions():
                     final_printout += f"""
                     This item has {round(lookup[lookup['product_title']==key]['tot_prod_reviews'].mean())} reviews 
                     and a {round(lookup[lookup['product_title']==key]['avg_prod_stars'].mean(), 2)} average star rating"""
+                    final_printout += '\n'
 
-
-                return f'''
+                return (f'''
 
                 Recommending items similar to: {q}
                 This item has {round(lookup[lookup['product_title']==q]['tot_prod_reviews'].mean())} reviews
@@ -84,7 +87,7 @@ def make_predictions():
                 
                 {final_printout}
                 
-                '''
+                ''')
                 
             else:
                 
@@ -103,8 +106,8 @@ def make_predictions():
                     final_printout += f"""
                     This item has {round(lookup[lookup['product_title']==item[0]]['tot_prod_reviews'].mean())} reviews 
                     and a {round(lookup[lookup['product_title']==item[0]]['avg_prod_stars'].mean(), 2)} average star rating"""
-                
-                return f'''
+                    final_printout += '\n'
+                return (f'''
 
                 Recommending items similar to: {q}
                 This item has {round(lookup[lookup['product_title']==q]['tot_prod_reviews'].mean())} reviews
@@ -114,10 +117,10 @@ def make_predictions():
                 
                 {final_printout}
                 
-                '''
-        
+                ''')
+            
         except:
-            return f'Sorry, "{query}" does not appear to be in the product database'
+            return (f'Sorry, "{query}" does not appear to be in the product database')
     
     
     # coerce data into a format that we can pass to our model
@@ -142,14 +145,17 @@ def make_predictions():
     #prediction = model.predict(data)[0]
 
     user_input_list = [
-        user_input["cat"],
+        #user_input["cat"],
+        user_input["category"],
         user_input["query"],
         user_input["wout"]
     ]
-    #print(f'{user_input_list}', file=sys.stderr)
-    #print(f'{user_input_list}')
+
 #['category', 'query', 'wout']
-    recommendations = rec_search(user_input_list[0], user_input_list[1], user_input_list[2])
+    if user_input_list[2] == '':
+        recommendations = rec_search(user_input_list[0], user_input_list[1])
+    else:
+        recommendations = rec_search(user_input_list[0], user_input_list[1], user_input_list[2])
     return render_template("reco_results.html", recs = recommendations)
     #return render_template("results.html", uri = print(user_input_list))
 # run the app
