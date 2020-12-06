@@ -48,7 +48,7 @@ def make_predictions():
     user_input = request.args
     #print(f'{user_input}', file=sys.stderr)
 
-    def rec_search(category, query, wout='no'):
+    def rec_search_df(category, query, wout='no'):
 
         if category.lower() == 'video games':
             lookup, recommender = vg_df, vg_rec #pd.read_pickle('./pickles/videog_look.pkl'),pd.read_pickle('./pickles/videog_rec.pkl')
