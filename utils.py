@@ -178,3 +178,17 @@ def make_recommender_df(df, name): #converts df to recommender and saves under i
 
 def size_in_gb(some_df): #returns size of input value in gigabytes
     return f'{sys.getsizeof(some_df)/1_000_000_000} GB'
+
+
+
+
+def make_smaller_lookup(lookup_df):
+    print(lookup_df.shape) #preview initial shape
+    print(lookup_df['product_title'].nunique()) #unique product count
+    lookup_df = lookup_df.groupby('product_title').first().copy() #only 1 row for each unique product
+    lookup_df.reset_index(inplace=True) #add index, was removed during groupby
+    lookup_df.drop(columns=['customer_id', 'product_id', 'star_rating', 'review_date'], inplace=True) #drop unused columns
+    lookup_df.sort_values(by='tot_prod_reviews', ascending=False, inplace=True) #sort by most reviews
+    lookup_df.reset_index(inplace=True) #reset index
+    lookup_df.drop(columns=['index'], inplace=True) #drop original index (needed previously in order to sort)
+    return lookup_df
