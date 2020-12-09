@@ -22,13 +22,16 @@ page = st.sidebar.selectbox(
 #display searched term function
 
 def show_query_desc(query):
-    query=query.lower()
-    titles = list(lookup[lookup['product_title'].map(lambda x: x.lower()).str.contains(query)]['product_title'])
-    item = titles[0]
-    return pd.DataFrame(data = {'Most Popular Item Containing Your Search Term(s):' : item,
-                               'Total Reviews for Product': round(lookup[lookup['product_title']==item]['tot_prod_reviews'].mean()),
-                                'Avg Product Star Rating(1-5)': round(lookup[lookup['product_title']==item]['avg_prod_stars'].mean(), 2)
-                               }, index=['Search']).to_markdown()
+    try:
+        query=query.lower()
+        titles = list(lookup[lookup['product_title'].map(lambda x: x.lower()).str.contains(query)]['product_title'])
+        item = titles[0]
+        return f'''
+        Most Popular Item Containing Your Search Term(s): {item}
+        There are {round(lookup[lookup['product_title']==item]['tot_prod_reviews'].mean())} total reviews for this item and it has an average star rating of {round(lookup[lookup['product_title']==item]['avg_prod_stars'].mean(), 2)}
+        '''        
+    except:
+        return f'{query} not found; please enter a valid search term'
 
 #recommender function
 
@@ -110,7 +113,7 @@ Try it out for yourself:
     if type(recommendation) == str:
         st.write(recommendation) #if result is a string, print it
     else:
-        st.markdown(searched) #show searched term
+        st.write(searched) #show searched term
         st.table(recommendation) #if result is a df, show it
 
     st.write('''
@@ -143,7 +146,7 @@ Try it out for yourself:
     if type(recommendation) == str:
         st.write(recommendation) #if result is a string, print it
     else:
-        st.table(searched) #show searched term
+        st.write(searched) #show searched term
         st.table(recommendation) #if result is a df, show it
 
     st.write('''
@@ -174,7 +177,7 @@ Try it out for yourself:
     if type(recommendation) == str:
         st.write(recommendation) #if result is a string, print it
     else:
-        st.table(searched) #show searched term
+        st.write(searched) #show searched term
         st.table(recommendation) #if result is a df, show it
 
     st.write('''
