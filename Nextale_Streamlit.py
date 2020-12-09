@@ -83,7 +83,7 @@ def make_recs_new(query, wout=''):  #need to set lookup and recommender global v
             return message, final_output_df
         
     except:
-        return f'Sorry, "{query}" does not appear to be in the product database'
+        return 'Error', f'Sorry, "{query}" does not appear to be in the product database'
 
     
 if page == 'Overview':
