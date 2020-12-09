@@ -3,7 +3,11 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
+import bz2
+import _pickle as cPickle
 #https://docs.streamlit.io/en/stable/api.html#display-data
+
+
 
 st.set_page_config(
     page_icon=':books:',
@@ -71,29 +75,27 @@ if page == 'Overview':
 
 Recommendation systems are ubiquitous in today's attention-driven online environment, whether used by an online retailer to recommend similar products or a media application to prompt binge-watching. These systems use a combination of well known and proprietary techniques to engage customers with customized recommendations based on their previous preference. In this project, I created a relatively simple version of one of these recommenders using customer reviews between 1995-2015 provided by Amazon. I specifically looked at products in the categories of books, movies, and video games. To reflect the narrative element in each of these products, I titled my project "Nextale". It is a tool to assist the user in finding their "next tale" based on something they enjoyed previously.
 
-*in order to expedite search results and save memory, this application works off of a truncated version of the full recommender; for each product, the 100 most similar products are stored in memory. This means that theoretically, if a user's "does not include" search term is too broad, less than 10 similar products may be available which would compromise the resulting printout. While acknowledging this potentiality, I would like to stress that this error has never been observed in any tests of the application.
-
-
-    ''')
-
+''')
 
 elif page =='Books':
     st.subheader('Books')
     st.write('''
-The book recommender was trained on 1,489,354 reviews consisting of 795,389 unique customers and 46,575 unique products.
+The book recommender was built from 1,489,354 reviews consisting of 795,389 unique customers and 46,575 unique products.
 
 Try it out for yourself:
     ''')
 
-    #lookup, recommender = books_look, books_rec #set variables
-    lookup = pd.read_pickle('./pickles/books_look_small.pkl')
+    lookup = pd.read_pickle('./compressed/books_look_c.pkl')
+
+    #recommender = bz2.BZ2File('./compressed/books_rec_c.pbz2')
+    #recommender = cPickle.load(recommender)
     
-    with open('./pickles/new_books_rec.pkl', 'rb') as f:
+    with open('./compressed/new_books_rec.pkl', 'rb') as f:
         recommender = pickle.load(f)
 
-    query = st.text_input('Please enter a word or phrase to search": ', max_chars=50)
+    query = st.text_input('Please enter a word or phrase to search: ', max_chars=50)
 
-    wout = st.text_input('If you would like to exclude a term from your search, please enter it here": ', max_chars=50)
+    wout = st.text_input('If you would like to exclude a term from your search, please enter it here: ', max_chars=50)
 
     recommendation = make_recs_new(query, wout)
 
@@ -101,26 +103,32 @@ Try it out for yourself:
         st.write(recommendation) #if result is a string, print it
     else:
         st.table(recommendation) #if result is a df, show it
+
+    st.write('''
+    *in order to expedite search results and save memory, this application works off of a truncated version of the full recommender; for each product, the 100 most similar products are stored in memory. This means that theoretically, if a user's "exclusion" search term is too broad, less than 10 similar products may be available which would compromise the resulting printout. While possible, this error has never been observed in any tests of the application to date.
+    ''')
 
 
 elif page =='Movies':
     st.subheader('Movies')
     st.write('''
-The movie recommender was trained on 4,405,432 reviews consisting of 1,867,543 unique customers and 72,385 unique products.
+The movie recommender was built from 4,405,432 reviews consisting of 1,867,543 unique customers and 72,385 unique products.
 
-Try it out for yourself:
+Try it out for yourself:  
+*Please note that the movies product list is very large - loading may take a few extra seconds!*
     ''')
 
-    #lookup, recommender = movies_look, movies_rec #set variables
+    lookup = pd.read_pickle('./compressed/movies_look_c.pkl')
 
-    lookup = pd.read_pickle('./pickles/movies_look_small.pkl')
+    recommender = bz2.BZ2File('./compressed/movies_rec_c.pbz2')
+    recommender = cPickle.load(recommender)
 
-    with open('./pickles/new_movies_rec.pkl', 'rb') as f:
-        recommender = pickle.load(f)
+    #with open('./pickles/new_movies_rec.pkl', 'rb') as f:
+        #recommender = pickle.load(f)
 
-    query = st.text_input('Please enter a word or phrase to search": ', max_chars=50)
+    query = st.text_input('Please enter a word or phrase to search: ', max_chars=50)
 
-    wout = st.text_input('If you would like to exclude a term from your search, please enter it here": ', max_chars=50)
+    wout = st.text_input('If you would like to exclude a term from your search, please enter it here: ', max_chars=50)
 
     recommendation = make_recs_new(query, wout)
 
@@ -129,25 +137,29 @@ Try it out for yourself:
     else:
         st.table(recommendation) #if result is a df, show it
 
+    st.write('''
+    *in order to expedite search results and save memory, this application works off of a truncated version of the full recommender; for each product, the 100 most similar products are stored in memory. This means that theoretically, if a user's "exclusion" search term is too broad, less than 10 similar products may be available which would compromise the resulting printout. While possible, this error has never been observed in any tests of the application to date.
+    ''')
 
 elif page =='Video Games':
     st.subheader('Video Games')
     st.write('''
-The video game recommender was trained on 1,648,136 reviews consisting of 979,917 unique customers and 15,938 unique products.
+The video game recommender was built from 1,648,136 reviews consisting of 979,917 unique customers and 15,938 unique products.
 
 Try it out for yourself:
     ''')
 
-    #lookup, recommender = vg_look, vg_rec #set variables
+    lookup = pd.read_pickle('./compressed/vg_look_c.pkl')
 
-    lookup = pd.read_pickle('./pickles/vg_look_small.pkl')
+    #recommender = bz2.BZ2File('./compressed/vg_rec_c.pbz2')
+    #recommender = cPickle.load(recommender)
 
-    with open('./pickles/new_vg_rec.pkl', 'rb') as f:
+    with open('./compressed/new_vg_rec.pkl', 'rb') as f:
         recommender = pickle.load(f)
 
-    query = st.text_input('Please enter a word or phrase to search": ', max_chars=50)
+    query = st.text_input('Please enter a word or phrase to search: ', max_chars=50)
 
-    wout = st.text_input('If you would like to exclude a term from your search, please enter it here": ', max_chars=50)
+    wout = st.text_input('If you would like to exclude a term from your search, please enter it here: ', max_chars=50)
 
     recommendation = make_recs_new(query, wout)
 
@@ -155,3 +167,7 @@ Try it out for yourself:
         st.write(recommendation) #if result is a string, print it
     else:
         st.table(recommendation) #if result is a df, show it
+
+    st.write('''
+    *in order to expedite search results and save memory, this application works off of a truncated version of the full recommender; for each product, the 100 most similar products are stored in memory. This means that theoretically, if a user's "exclusion" search term is too broad, less than 10 similar products may be available which would compromise the resulting printout. While possible, this error has never been observed in any tests of the application to date.
+    ''')
