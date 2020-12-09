@@ -84,7 +84,7 @@ The book recommender was built from 1,489,354 reviews consisting of 795,389 uniq
 Try it out for yourself:
     ''')
 
-    lookup = pd.read_pickle('./compressed/books_look_c.pkl')
+    lookup = pd.read_pickle('./compressed/books_look_p3')
 
     #recommender = bz2.BZ2File('./compressed/books_rec_c.pbz2')
     #recommender = cPickle.load(recommender)
@@ -117,7 +117,7 @@ Try it out for yourself:
 *Please note that the movies product list is very large - loading may take a few extra seconds!*
     ''')
 
-    lookup = pd.read_pickle('./compressed/movies_look_c.pkl')
+    lookup = pd.read_pickle('./compressed/movies_look_p3')
 
     recommender = bz2.BZ2File('./compressed/movies_rec_c.pbz2')
     recommender = cPickle.load(recommender)
@@ -148,7 +148,7 @@ The video game recommender was built from 1,648,136 reviews consisting of 979,91
 Try it out for yourself:
     ''')
 
-    lookup = pd.read_pickle('./compressed/vg_look_c.pkl')
+    lookup = pd.read_pickle('./compressed/vg_look_p3')
 
     #recommender = bz2.BZ2File('./compressed/vg_rec_c.pbz2')
     #recommender = cPickle.load(recommender)
