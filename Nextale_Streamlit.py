@@ -19,6 +19,16 @@ page = st.sidebar.selectbox(
     'Select-A-Page',
     ('Overview', 'Books', 'Movies', 'Video Games')
 )
+#display searched term function
+
+def show_query_desc(query):
+    query=query.lower()
+    titles = list(lookup[lookup['product_title'].map(lambda x: x.lower()).str.contains(query)]['product_title'])
+    item = titles[0]
+    return pd.DataFrame(data = {'Most Popular Item Containing Your Search Term(s):' : item,
+                               'Total Reviews for Product': round(lookup[lookup['product_title']==item]['tot_prod_reviews'].mean()),
+                                'Avg Product Star Rating(1-5)': round(lookup[lookup['product_title']==item]['avg_prod_stars'].mean(), 2)
+                               }, index=['Search'])
 
 #recommender function
 
@@ -86,9 +96,6 @@ Try it out for yourself:
 
     lookup = pd.read_pickle('./compressed/books_look_p3')
 
-    #recommender = bz2.BZ2File('./compressed/books_rec_c.pbz2')
-    #recommender = cPickle.load(recommender)
-    
     with open('./compressed/new_books_rec.pkl', 'rb') as f:
         recommender = pickle.load(f)
 
@@ -96,11 +103,14 @@ Try it out for yourself:
 
     wout = st.text_input('If you would like to exclude a term from your search, please enter it here: ', max_chars=50)
 
+    searched = show_query_desc(query)
+
     recommendation = make_recs_new(query, wout)
 
     if type(recommendation) == str:
         st.write(recommendation) #if result is a string, print it
     else:
+        st.table(searched) #show searched term
         st.table(recommendation) #if result is a df, show it
 
     st.write('''
@@ -122,18 +132,18 @@ Try it out for yourself:
     recommender = bz2.BZ2File('./compressed/movies_rec_c.pbz2')
     recommender = cPickle.load(recommender)
 
-    #with open('./pickles/new_movies_rec.pkl', 'rb') as f:
-        #recommender = pickle.load(f)
-
     query = st.text_input('Please enter a word or phrase to search: ', max_chars=50)
 
     wout = st.text_input('If you would like to exclude a term from your search, please enter it here: ', max_chars=50)
+
+    searched = show_query_desc(query)
 
     recommendation = make_recs_new(query, wout)
 
     if type(recommendation) == str:
         st.write(recommendation) #if result is a string, print it
     else:
+        st.table(searched) #show searched term
         st.table(recommendation) #if result is a df, show it
 
     st.write('''
@@ -150,9 +160,6 @@ Try it out for yourself:
 
     lookup = pd.read_pickle('./compressed/vg_look_p3')
 
-    #recommender = bz2.BZ2File('./compressed/vg_rec_c.pbz2')
-    #recommender = cPickle.load(recommender)
-
     with open('./compressed/new_vg_rec.pkl', 'rb') as f:
         recommender = pickle.load(f)
 
@@ -160,11 +167,14 @@ Try it out for yourself:
 
     wout = st.text_input('If you would like to exclude a term from your search, please enter it here: ', max_chars=50)
 
+    searched = show_query_desc(query)
+
     recommendation = make_recs_new(query, wout)
 
     if type(recommendation) == str:
         st.write(recommendation) #if result is a string, print it
     else:
+        st.table(searched) #show searched term
         st.table(recommendation) #if result is a df, show it
 
     st.write('''
