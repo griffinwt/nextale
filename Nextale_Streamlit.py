@@ -1,4 +1,4 @@
-import pickle5 as pickle
+import pickle
 import streamlit as st
 import numpy as np
 import pandas as pd
