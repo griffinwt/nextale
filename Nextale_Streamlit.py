@@ -110,8 +110,11 @@ Try it out for yourself:
     if type(recommendation) == str:
         st.write(recommendation) #if result is a string, print it
     else:
-        st.table(searched) #show searched term
-        st.table(recommendation) #if result is a df, show it
+        try:
+            st.table(searched) #show searched term
+            st.table(recommendation) #if result is a df, show it
+        except:
+            st.table(recommendation) #if result is a df, show it
 
     st.write('''
     *in order to expedite search results and save memory, this application works off of a truncated version of the full recommender; for each product, the 100 most similar products are stored in memory. This means that theoretically, if a user's "exclusion" search term is too broad, less than 10 similar products may be available which would compromise the resulting printout. While possible, this error has never been observed in any tests of the application to date.
