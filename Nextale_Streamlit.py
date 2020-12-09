@@ -6,8 +6,6 @@ import bz2
 import _pickle as cPickle
 #https://docs.streamlit.io/en/stable/api.html#display-data
 
-
-
 st.set_page_config(
     page_icon=':books:',
     initial_sidebar_state='auto'
@@ -19,19 +17,6 @@ page = st.sidebar.selectbox(
     'Select-A-Page',
     ('Overview', 'Books', 'Movies', 'Video Games')
 )
-#display searched term function
-
-def show_query_desc(query):
-    try:
-        query=query.lower()
-        titles = list(lookup[lookup['product_title'].map(lambda x: x.lower()).str.contains(query)]['product_title'])
-        item = titles[0]
-        return f'''
-        **Most Popular Item Containing Your Search Term(s):** {item}  
-        There are {round(lookup[lookup['product_title']==item]['tot_prod_reviews'].mean())} total reviews for this item and it has an average star rating of {round(lookup[lookup['product_title']==item]['avg_prod_stars'].mean(), 2)}
-        '''        
-    except:
-        return f'{query} not found; please enter a valid search term'
 
 #recommender function
 
@@ -111,8 +96,6 @@ Try it out for yourself:
 
     wout = st.text_input('If you would like to exclude a term from your search, please enter it here: ', max_chars=50)
 
-    #searched = show_query_desc(query)
-
     searched, recommendation = make_recs_new(query, wout)
 
     if type(recommendation) == str:
@@ -144,9 +127,7 @@ Try it out for yourself:
 
     wout = st.text_input('If you would like to exclude a term from your search, please enter it here: ', max_chars=50)
 
-    searched = show_query_desc(query)
-
-    recommendation = make_recs_new(query, wout)
+    searched, recommendation = make_recs_new(query, wout)
 
     if type(recommendation) == str:
         st.write(recommendation) #if result is a string, print it
@@ -175,9 +156,7 @@ Try it out for yourself:
 
     wout = st.text_input('If you would like to exclude a term from your search, please enter it here: ', max_chars=50)
 
-    searched = show_query_desc(query)
-
-    recommendation = make_recs_new(query, wout)
+    searched, recommendation = make_recs_new(query, wout)
 
     if type(recommendation) == str:
         st.write(recommendation) #if result is a string, print it
