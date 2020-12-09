@@ -41,6 +41,11 @@ def make_recs_new(query, wout=''):  #need to set lookup and recommender global v
         titles = list(lookup[lookup['product_title'].map(lambda x: x.lower()).str.contains(query)]['product_title'])
         q = titles[0] #this is the item to search for
 
+        message = f'''
+        **Most Popular Item Containing Your Search Term(s):** {q}  
+        There are {round(lookup[lookup['product_title']==q]['tot_prod_reviews'].mean())} total reviews for this item and it has an average star rating of {round(lookup[lookup['product_title']==q]['avg_prod_stars'].mean(), 2)}
+        '''   
+
         if wout == '':           
             top10_prods = []
             num_prod_revs = []
@@ -54,7 +59,7 @@ def make_recs_new(query, wout=''):  #need to set lookup and recommender global v
                 'Total Reviews for Product':num_prod_revs,
                 'Avg Product Star Rating(1-5)':avg_prod_stars
             }, index=range(1,11))
-            return final_output_df            
+            return message, final_output_df            
             
         else:
             
@@ -75,7 +80,7 @@ def make_recs_new(query, wout=''):  #need to set lookup and recommender global v
                 'Total Reviews for Product':num_prod_revs,
                 'Avg Product Star Rating(1-5)':avg_prod_stars
                 }, index=range(1,11))
-            return final_output_df
+            return message, final_output_df
         
     except:
         return f'Sorry, "{query}" does not appear to be in the product database'
@@ -106,9 +111,9 @@ Try it out for yourself:
 
     wout = st.text_input('If you would like to exclude a term from your search, please enter it here: ', max_chars=50)
 
-    searched = show_query_desc(query)
+    #searched = show_query_desc(query)
 
-    recommendation = make_recs_new(query, wout)
+    searched, recommendation = make_recs_new(query, wout)
 
     if type(recommendation) == str:
         st.write(recommendation) #if result is a string, print it
