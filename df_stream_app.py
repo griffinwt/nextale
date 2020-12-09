@@ -2,27 +2,26 @@ import pickle
 import streamlit as st
 import numpy as np
 import pandas as pd
-import re
-import time
-import random
-import sys
-from sklearn.metrics.pairwise import pairwise_distances, cosine_distances, cosine_similarity
-from scipy import sparse
 from matplotlib import pyplot as plt
-import utils as ut
 #https://docs.streamlit.io/en/stable/api.html#display-data
 
 st.set_page_config(
-    page_icon='📖',
-    initial_sidebar_state='expanded'
+    page_icon=':books:',
+    initial_sidebar_state='auto'
 )
 
-st.title('Recommender System')
+st.title('Find your next adventure...')
 
 page = st.sidebar.selectbox(
     'Select-A-Page',
     ('Overview', 'Books', 'Movies', 'Video Games', 'Recommender')
 )
+
+#read in pickled dataframes
+
+vg_df, vg_rec = pd.read_pickle('./pickles/vg_look_small.pkl'), pd.read_pickle('./pickles/videog_rec.pkl')
+movies_df, movies_rec = pd.read_pickle('./pickles/movies_look_small.pkl'), pd.read_pickle('./pickles/movie_rec.pkl')
+books_df, books_rec = pd.read_pickle('./pickles/books_look_small.pkl'), pd.read_pickle('./pickles/books_rec.pkl')
 
 #define recommender function
 
@@ -96,9 +95,9 @@ def rec_search(category, query, wout='no'):
 
 #read in pickled dataframes
 
-vg_df, vg_rec = pd.read_pickle('./pickles/vg_look_small.pkl'), pd.read_pickle('./pickles/videog_rec.pkl')
-movies_df, movies_rec = pd.read_pickle('./pickles/movies_look_small.pkl'), pd.read_pickle('./pickles/movie_rec.pkl')
-books_df, books_rec = pd.read_pickle('./pickles/books_look_small.pkl'), pd.read_pickle('./pickles/books_rec.pkl')
+#vg_df, vg_rec = pd.read_pickle('./pickles/vg_look_small.pkl'), pd.read_pickle('./pickles/videog_rec.pkl')
+#movies_df, movies_rec = pd.read_pickle('./pickles/movies_look_small.pkl'), pd.read_pickle('./pickles/movie_rec.pkl')
+#books_df, books_rec = pd.read_pickle('./pickles/books_look_small.pkl'), pd.read_pickle('./pickles/books_rec.pkl')
 
 #define lookup function(s)
 #@st.cache
@@ -147,9 +146,11 @@ elif page =='Recommender':
     else:
         recommendation = rec_search(category, query, wout)
 
-    pd.set_option('display.max_colwidth', -1)
+    #pd.set_option('display.max_colwidth', -1)
 
     if type(recommendation) == str: #if outcome is a string, return a string
         st.write(f'Recommendations: {recommendation}')
     else: #otherwise, return a dataframe
-        st.write(f'Recommendations: {st.dataframe(recommendation, width=1500)}')
+        #pd.set_option('display.max_colwidth', -1)
+        #st.write(f'Recommendations: {st.table(recommendation)}')
+        st.table(recommendation)
