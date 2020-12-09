@@ -27,7 +27,7 @@ def show_query_desc(query):
         titles = list(lookup[lookup['product_title'].map(lambda x: x.lower()).str.contains(query)]['product_title'])
         item = titles[0]
         return f'''
-        Most Popular Item Containing Your Search Term(s): {item}
+        Most Popular Item Containing Your Search Term(s): {item}  
         There are {round(lookup[lookup['product_title']==item]['tot_prod_reviews'].mean())} total reviews for this item and it has an average star rating of {round(lookup[lookup['product_title']==item]['avg_prod_stars'].mean(), 2)}
         '''        
     except:
