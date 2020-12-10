@@ -80,12 +80,28 @@ Recommendation systems are ubiquitous in today's attention-driven online environ
 ''')
     st.subheader('How It Works')
     st.write('''
-Having cleaned the review data, I set out to create a cosine distance recommender model. This model finds the similarity between products by measuring the distance between their vectors created from review grades by customers. Here is an example of what the initial product x reviewer matrix looked like on a small scale (with artificial ratings):
+This model finds the similarity between products by measuring the distance between their vectors created from review grades by customers. Here is an example of what the initial product x reviewer matrix looked like on a small scale (with artificial ratings):
     ''')
 
     st.table(pd.read_pickle('./compressed/sample_pivot.pkl'))
 
+    st.write('''
+We can see here that the vector created from the ratings of Batman Returns is [3,4,1] and the vector of Frozen will be [5,1,5]. These vectors are like lines pointing out from the same origin point. The more similar the contents are, the more similar the direction in which they point. The cosine distance (angle) between these lines will be a measure between 0 and 1 where 0 (no distance) means they are identical and 1 means no relationship. Here's an image that represents those vectors:
+    ''')
+
     st.image('./images/sample_vectors.png', use_column_width=True)
+
+    st.write('''
+We see that Frozen and Mulan are on very similar trajectories and the angle between them is small. Contrastingly, The Shining is pointing in quite a different direction, with Batman Returns somewhere in between. Here is what that distance looks like numerically - the number in each cell represents the pairwise distance items.    
+    ''')
+
+    st.table(pd.read_pickle('./compressed/sample_rec.pkl'))
+
+    st.write('''
+As we might expect, the distance between each film and itself is 0 (along the diagonal)! By selecting a product and sorting the numerical contents of that product's column from least to greatest, we can predict similarity between items. For example:
+    ''')
+
+    
 
 elif page =='Books':
     st.subheader('Books')
