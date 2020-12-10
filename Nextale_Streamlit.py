@@ -85,7 +85,7 @@ Having cleaned the review data, I set out to create a cosine distance recommende
 
     st.table(pd.read_pickle('./compressed/sample_pivot.pkl'))
 
-    st.image('./images/sample_vectors.png', use_column_width=True))
+    st.image('./images/sample_vectors.png', use_column_width=True)
 
 elif page =='Books':
     st.subheader('Books')
