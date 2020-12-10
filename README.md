@@ -20,7 +20,7 @@ My first task in undertaking this project was finding a suitable volume and brea
 
 <img src="./Chapter_1/images/top_5_reasons.png" width="75%" height="75%">
 
-Having cleaned the review data, I set out to create a cosine distance recommender model. This model finds the similarity between products by measuring the distance between their vectors created from review grades by customers. Here is an example of what the initial product x reviewer matrix looked like on a small scale with made-up scores:
+Having cleaned the review data, I set out to create a cosine distance recommender model. This model finds the similarity between products by measuring the distance between their vectors created from review grades by customers. Here is an example of what the initial product x reviewer matrix looked like on a small scale (with artificial ratings):
 
 
 | Movie          |   user_1 |   user_2 |   user_3 |

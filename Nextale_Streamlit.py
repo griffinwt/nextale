@@ -78,6 +78,18 @@ if page == 'Overview':
 Recommendation systems are ubiquitous in today's attention-driven online environment, whether used by an online retailer to recommend similar products or a media application to prompt binge-watching. These systems use a combination of well known and proprietary techniques to engage customers with customized recommendations based on their previous preference. In this project, I created a relatively simple version of one of these recommenders using customer reviews between 1995-2015 provided by Amazon. I specifically looked at products in the categories of books, movies, and video games. To reflect the narrative element in each of these products, I titled my project "Nextale". It is a tool to assist the user in finding their "next tale" based on something they enjoyed previously.
 
 ''')
+    st.subheader('How It Works')
+    st.write('''
+Having cleaned the review data, I set out to create a cosine distance recommender model. This model finds the similarity between products by measuring the distance between their vectors created from review grades by customers. Here is an example of what the initial product x reviewer matrix looked like on a small scale (with artificial ratings):
+    ''')
+    st.markdown(
+        | Movie          |   user_1 |   user_2 |   user_3 |
+|:---------------|---------:|---------:|---------:|
+| Batman Returns |        3 |        4 |        1 |
+| Frozen         |        5 |        1 |        5 |
+| Mulan          |        5 |        0 |        4 |
+| The Shining    |        0 |        5 |        1 |
+    )
 
     st.image('./images/sample_vectors.png', use_column_width=True)
 
