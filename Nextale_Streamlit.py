@@ -79,6 +79,8 @@ Recommendation systems are ubiquitous in today's attention-driven online environ
 
 ''')
 
+    st.image('./images/sample_vectors.png')
+
 elif page =='Books':
     st.subheader('Books')
     st.write('''
