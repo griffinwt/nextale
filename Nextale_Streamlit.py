@@ -92,7 +92,7 @@ We can see here that the vector created from the ratings of Batman Returns is [3
     st.image('./images/sample_vectors.png', use_column_width=True)
 
     st.write('''
-We see that Frozen and Mulan are on very similar trajectories and the angle between them is small. Contrastingly, The Shining is pointing in quite a different direction, with Batman Returns somewhere in between. Here is what that distance looks like numerically - the number in each cell represents the pairwise distance items.    
+We see that Frozen and Mulan are on very similar trajectories and the angle between them is small. Contrastingly, The Shining is pointing in quite a different direction, with Batman Returns somewhere in between. Here is what that distance looks like numerically - the number in each cell represents the pairwise distance between items.    
     ''')
 
     st.table(pd.read_pickle('./compressed/sample_rec.pkl'))
@@ -104,7 +104,7 @@ As we might expect, the distance between each film and itself is 0 (along the di
     st.table(pd.read_pickle('./compressed/fro_df.pkl'))
 
     st.write('''
-Obviously Frozen's best match is with itself... after that we would recommend Mulan, then Batman Returns, then The Shining, which intuitively is probably the order we would expect. My recommender works just like this!
+Obviously Frozen's best match is with itself... after that we would recommend Mulan, then Batman Returns, then The Shining, which intuitively is probably the order we would expect. My recommender works just like this, but in a few more than 3 dimensions!
     ''')
 
 elif page =='Books':

@@ -34,7 +34,7 @@ We can see here that the vector created from the ratings of Batman Returns is [3
 
 <img src="./images/sample_vectors.png" width="75%" height="75%">
 
-We see that Frozen and Mulan are on very similar trajectories and the angle between them is small. Contrastingly, The Shining is pointing in quite a different direction, with Batman Returns somewhere in between. Here is what that distance looks like numerically - the number in each cell represents the pairwise distance items.
+We see that Frozen and Mulan are on very similar trajectories and the angle between them is small. Contrastingly, The Shining is pointing in quite a different direction, with Batman Returns somewhere in between. Here is what that distance looks like numerically - the number in each cell represents the pairwise distance between items.
 
 |                |   Batman Returns |   Frozen |   Mulan |   The Shining |
 |:---------------|-----------------:|---------:|--------:|--------------:|
@@ -52,7 +52,7 @@ As we might expect, the distance between each film and itself is 0 (along the di
 | Batman Returns |     0.34 |
 | The Shining    |     0.73 |
 
-Obviously Frozen's best match is with itself... after that we would recommend Mulan, then Batman Returns, then The Shining, which intuitively is probably the order we would expect. My recommender works just like this!
+Obviously Frozen's best match is with itself... after that we would recommend Mulan, then Batman Returns, then The Shining, which intuitively is probably the order we would expect. My recommender works just like this, but in a few more than 3 dimensions!
 
 One potential hurdle in deploying this form of recommender is if a reviewr has made more than one review for the same product. While this represented a relatively small proportion of my total reviews, I am generally reluctant to remove data if there is some way to salvage it and use it. In my exploration, I found that some of these reviews were simply duplicates (the reviewer presumably revisited the "submit" button in quick and aggressive fashion following their entry), but others were people who had one initial reaction and then later returned to give a second opinion after more evaluation. Without having the time or desire to examine each one of these instances individually, I settled upon sorting them by date and keeping the most recent entry. For customers who accidentally submitted their review multiple times at the same instant, any one of them would be a fair enough representation of their opinion, and for those who made an initial and then subsequent contribution, their final opinion would be the one that counted.
 
