@@ -101,7 +101,11 @@ We see that Frozen and Mulan are on very similar trajectories and the angle betw
 As we might expect, the distance between each film and itself is 0 (along the diagonal)! By selecting a product and sorting the numerical contents of that product's column from least to greatest, we can predict similarity between items. For example:
     ''')
 
-    
+    st.table(pd.read_pickle('./compressed/fro_df.pkl'))
+
+    st.write('''
+Obviously Frozen's best match is with itself... after that we would recommend Mulan, then Batman Returns, then The Shining, which intuitively is probably the order we would expect. My recommender works just like this!
+    ''')
 
 elif page =='Books':
     st.subheader('Books')
