@@ -80,7 +80,7 @@ Recommendation systems are ubiquitous in today's attention-driven online environ
 ''')
     st.subheader('How It Works')
     st.write('''
-This model finds the similarity between products by measuring the distance between their vectors created from review grades by customers. Here is an example of what the initial product x reviewer matrix looked like on a small scale (with artificial ratings):
+This model finds the similarity between products by measuring the distance between their vectors created from review grades by customers. Here is an example of what the initial reviewer by product matrix looked like on a small scale (with artificial ratings):
     ''')
 
     st.table(pd.read_pickle('./compressed/sample_pivot.pkl'))
