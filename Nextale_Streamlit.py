@@ -83,9 +83,9 @@ Recommendation systems are ubiquitous in today's attention-driven online environ
 Having cleaned the review data, I set out to create a cosine distance recommender model. This model finds the similarity between products by measuring the distance between their vectors created from review grades by customers. Here is an example of what the initial product x reviewer matrix looked like on a small scale (with artificial ratings):
     ''')
 
-    st.table('./compressed/sample_pivot.pkl')
+    st.table(pd.read_pickle('./compressed/sample_pivot.pkl'))
 
-    st.image(pd.read_pickle('./images/sample_vectors.png', use_column_width=True))
+    st.image('./images/sample_vectors.png', use_column_width=True))
 
 elif page =='Books':
     st.subheader('Books')
