@@ -11,7 +11,7 @@ st.set_page_config(
     initial_sidebar_state='auto'
 )
 
-st.title('Find your next adventure...')
+st.title('Use the drop-down menu on the left to find your next adventure...')
 
 page = st.sidebar.selectbox(
     'Select-A-Page',
@@ -122,7 +122,7 @@ Try it out for yourself:
 
     query = st.text_input('Please enter a word or phrase to search: ', max_chars=50)
 
-    wout = st.text_input('If you would like to exclude a term from your search, please enter it here: ', max_chars=50)
+    wout = st.text_input('If you would like to exclude a term from your results, please enter it here: ', max_chars=50)
 
     searched, recommendation = make_recs_new(query, wout)
 
@@ -153,7 +153,7 @@ Try it out for yourself:
 
     query = st.text_input('Please enter a word or phrase to search: ', max_chars=50)
 
-    wout = st.text_input('If you would like to exclude a term from your search, please enter it here: ', max_chars=50)
+    wout = st.text_input('If you would like to exclude a term from your results, please enter it here: ', max_chars=50)
 
     searched, recommendation = make_recs_new(query, wout)
 
@@ -182,7 +182,7 @@ Try it out for yourself:
 
     query = st.text_input('Please enter a word or phrase to search: ', max_chars=50)
 
-    wout = st.text_input('If you would like to exclude a term from your search, please enter it here: ', max_chars=50)
+    wout = st.text_input('If you would like to exclude a term from your results, please enter it here: ', max_chars=50)
 
     searched, recommendation = make_recs_new(query, wout)
 
