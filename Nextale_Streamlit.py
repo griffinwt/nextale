@@ -84,11 +84,11 @@ Having cleaned the review data, I set out to create a cosine distance recommende
     ''')
     st.markdown(
         | Movie          |   user_1 |   user_2 |   user_3 |
-|:---------------|---------:|---------:|---------:|
-| Batman Returns |        3 |        4 |        1 |
-| Frozen         |        5 |        1 |        5 |
-| Mulan          |        5 |        0 |        4 |
-| The Shining    |        0 |        5 |        1 |
+        |:---------------|---------:|---------:|---------:|
+        | Batman Returns |        3 |        4 |        1 |
+        | Frozen         |        5 |        1 |        5 |
+        | Mulan          |        5 |        0 |        4 |
+        | The Shining    |        0 |        5 |        1 |
     )
 
     st.image('./images/sample_vectors.png', use_column_width=True)
