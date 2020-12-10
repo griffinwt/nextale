@@ -25,9 +25,7 @@ tokenizer = RegexpTokenizer(r'\w+') #create tokenizer to remove punctuation
 
 def tokem_lite(some_string):
     stok = tokenizer.tokenize(some_string)
-    #stok = ' '.join(stok) #return string of words
     slem = [lemmatizer.lemmatize(word) for word in stok]
-    #slem = lemmatizer.lemmatize(stok)
     cleansw=[word for word in slem if word not in swords]
     return ' '.join(cleansw)
     for item in stok:
@@ -86,7 +84,6 @@ def clean_amazon_data(file_name, new_name):
         print(f'Size after tokemmitization: {sys.getsizeof(df)/1_000_000_000}') # print size of file (in Gigs)
     
     df.to_csv(f'./data/{new_name}.csv', index=False)
-    #print(f'File saved as {new_name}.csv')
     
     print(f'Final size: {sys.getsizeof(df)/1_000_000_000}') # print size of file (in Gigs)
     print(f'Final shape: {df.shape}') #preview shape
@@ -146,7 +143,6 @@ def make_recommender_df(df, name): #converts df to recommender and saves under i
     
     #create recommender df
     
-    #dists = dists.astype(np.float32) #convert float64 type to float32 to save memory
     print('Making df dictionary...')
     rec_cols = unique_prods
     rec_dict = {}
@@ -155,19 +151,13 @@ def make_recommender_df(df, name): #converts df to recommender and saves under i
     print('Dictionary made - sparse dataframe under construction...')
     recommender_df_sparse = pd.DataFrame(rec_dict,
                              index=rec_cols)
-                             #columns=rec_cols)
     
     #recommender_df = pd.DataFrame(dists,   #old way (used too much memory)
                              #index=unique_prods,
                              #columns=unique_prods)
     
-    #print(f'Size of Recommender df: {sys.getsizeof(recommender_df)/1_000_000_000} GB') #check size in GB                   
+                  
     print(f'Size of {name} Recommender df: {sys.getsizeof(recommender_df_sparse)/1_000_000_000} GB') #check size in GB
-    
-    #print(f'Size of Lookup df: {sys.getsizeof(df2)/1_000_000_000} GB') #check size in GB
-    #recommender_df.to_csv(f'./data/{name}_recommender.csv', index=False) #save file
-    #df2.to_csv(f'./data/{name}_lookup.csv', index=False) #save file
-    #return f'Operation complete; {name}_recommender.csv and {name}_lookup.csv saved in data folder.'
     
     #pickle df
     recommender_df_sparse.to_pickle(f'./pickles/{name}.pkl')
