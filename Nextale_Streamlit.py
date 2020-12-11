@@ -11,7 +11,7 @@ st.set_page_config(
     initial_sidebar_state='auto'
 )
 
-st.title('Use the drop-down menu on the left to find your next adventure...')
+st.title('Nextale: a Book, Movie, and Video Game Recommender by Will Griffin')
 
 page = st.sidebar.selectbox(
     'Select-A-Page',
@@ -78,6 +78,7 @@ if page == 'Overview':
 Recommendation systems are ubiquitous in today's attention-driven online environment, whether used by an online retailer to recommend similar products or a media application to prompt binge-watching. These systems use a combination of well known and proprietary techniques to engage customers with customized recommendations based on their previous preference. In this project, I created a relatively simple version of one of these recommenders using customer reviews between 1995-2015 provided by Amazon. I specifically looked at products in the categories of books, movies, and video games. To reflect the narrative element in each of these products, I titled my project "Nextale". It is a tool to assist the user in finding their "next tale" based on something they enjoyed previously.
 
 ''')
+    st.subheader('Use the drop-down menu on the left to find your next adventure...')
 
     st.image('./images/library.jpg', use_column_width=True)
 
