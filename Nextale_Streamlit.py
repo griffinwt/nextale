@@ -25,24 +25,27 @@ def make_recs_new(query, wout=''):  #need to set lookup and recommender global v
         query=query.lower() #lowercase entry, lowercase titles (only during search, below)
         titles = list(lookup[lookup['product_title'].map(lambda x: x.lower()).str.contains(query)]['product_title'])
         q = titles[0] #this is the item to search for
-
+        
         message = f'''
         **Most Popular Item Containing Your Search Term(s):** {q}  
         There are {round(lookup[lookup['product_title']==q]['tot_prod_reviews'].mean())} total reviews for this item and it has an average star rating of {round(lookup[lookup['product_title']==q]['avg_prod_stars'].mean(), 2)}
-        '''   
+        '''      
 
         if wout == '':           
             top10_prods = []
             num_prod_revs = []
             avg_prod_stars = []
+            top_5_words = []
             for key in list(recommender[q])[1:11]:
                 top10_prods.append(key)
                 num_prod_revs.append(round(lookup[lookup['product_title']==key]['tot_prod_reviews'].mean()))
                 avg_prod_stars.append(round(lookup[lookup['product_title']==key]['avg_prod_stars'].mean(), 2))
+                top_5_words.append(text[key])
             final_output_df = pd.DataFrame(data = {
                 'Recommended Items':top10_prods,
                 'Total Reviews for Product':num_prod_revs,
-                'Avg Product Star Rating(1-5)':avg_prod_stars
+                'Avg Product Star Rating(1-5)':avg_prod_stars,
+                'Most Common Words in Review Text':top_5_words
             }, index=range(1,11))
             return message, final_output_df            
             
@@ -56,19 +59,22 @@ def make_recs_new(query, wout=''):  #need to set lookup and recommender global v
             top10_prods = []
             num_prod_revs = []
             avg_prod_stars = []
+            top_5_words = []
             for item in filtered_query[1:11]:
                 top10_prods.append(item)
                 num_prod_revs.append(round(lookup[lookup['product_title']==item]['tot_prod_reviews'].mean()))
                 avg_prod_stars.append(round(lookup[lookup['product_title']==item]['avg_prod_stars'].mean(), 2))
+                top_5_words.append(text[item])
             final_output_df = pd.DataFrame(data = {
                 'Recommended Items':top10_prods,
                 'Total Reviews for Product':num_prod_revs,
-                'Avg Product Star Rating(1-5)':avg_prod_stars
+                'Avg Product Star Rating(1-5)':avg_prod_stars,
+                'Most Common Words in Review Text':top_5_words
                 }, index=range(1,11))
             return message, final_output_df
         
     except:
-        return 'Error', f'Sorry, "{query}" does not appear to be in the product database'
+        return f'Sorry, "{query}" does not appear to be in the product database'
 
     
 if page == 'Overview':
@@ -94,6 +100,9 @@ Try it out for yourself:
 
     with open('./compressed/books_rec_small.pkl', 'rb') as f:
         recommender = pickle.load(f)
+
+    with open('./compressed/books_text_dict.pkl', 'rb') as f:
+        text = pickle.load(f)
 
     query = st.text_input('Please enter a word or phrase to search: ', max_chars=50)
 
@@ -123,10 +132,11 @@ Try it out for yourself:
 
     lookup = pd.read_pickle('./compressed/movies_look_p3')
 
-    #recommender = bz2.BZ2File('./compressed/movies_rec_c.pbz2')
-    #recommender = cPickle.load(recommender)
     with open('./compressed/movies_rec_small.pkl', 'rb') as f:
         recommender = pickle.load(f)
+
+    with open('./compressed/movies_text_dict.pkl', 'rb') as f:
+        text = pickle.load(f)
 
     query = st.text_input('Please enter a word or phrase to search: ', max_chars=50)
 
@@ -156,6 +166,9 @@ Try it out for yourself:
 
     with open('./compressed/vg_rec_small.pkl', 'rb') as f:
         recommender = pickle.load(f)
+
+    with open('./compressed/vg_text_dict.pkl', 'rb') as f:
+        text = pickle.load(f)
 
     query = st.text_input('Please enter a word or phrase to search: ', max_chars=50)
 
