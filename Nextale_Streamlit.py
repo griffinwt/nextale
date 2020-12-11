@@ -175,26 +175,26 @@ elif page == 'How It Works':
     This model finds the similarity between products by measuring the angle between their vectors created from review grades by customers. Here is an example of what the initial reviewer by product matrix looked like on a small scale (with artificial ratings):
         ''')
 
-        st.table(pd.read_pickle('./compressed/sample_pivot.pkl'))
+    st.table(pd.read_pickle('./compressed/sample_pivot.pkl'))
 
-        st.write('''
-    We can see here that the vector created from the ratings of Batman Returns is [3,4,1] and the vector of Frozen will be [5,1,5]. These vectors are like lines pointing out from the same origin point. The more similar the contents are, the more similar the direction in which they point. The cosine distance (angle) between these lines will be a measure between 0 and 1 where 0 (no distance) means they are identical and 1 means no relationship. Here's an image that represents those vectors:
-        ''')
+    st.write('''
+We can see here that the vector created from the ratings of Batman Returns is [3,4,1] and the vector of Frozen will be [5,1,5]. These vectors are like lines pointing out from the same origin point. The more similar the contents are, the more similar the direction in which they point. The cosine distance (angle) between these lines will be a measure between 0 and 1 where 0 (no distance) means they are identical and 1 means no relationship. Here's an image that represents those vectors:
+    ''')
 
-        st.image('./images/sample_vectors.png', use_column_width=True)
+    st.image('./images/sample_vectors.png', use_column_width=True)
 
-        st.write('''
-    We see that Frozen and Mulan are on very similar trajectories and the angle between them is small. Contrastingly, The Shining is pointing in quite a different direction, with Batman Returns somewhere in between. Here is what that distance looks like numerically - the number in each cell represents the pairwise distance between items.    
-        ''')
+    st.write('''
+We see that Frozen and Mulan are on very similar trajectories and the angle between them is small. Contrastingly, The Shining is pointing in quite a different direction, with Batman Returns somewhere in between. Here is what that distance looks like numerically - the number in each cell represents the pairwise distance between items.    
+    ''')
 
-        st.table(pd.read_pickle('./compressed/sample_rec.pkl'))
+    st.table(pd.read_pickle('./compressed/sample_rec.pkl'))
 
-        st.write('''
-    As we might expect, the distance between each film and itself is 0 (along the diagonal)! By selecting a product and sorting the numerical contents of that product's column from least to greatest, we can predict similarity between items. For example:
-        ''')
+    st.write('''
+As we might expect, the distance between each film and itself is 0 (along the diagonal)! By selecting a product and sorting the numerical contents of that product's column from least to greatest, we can predict similarity between items. For example:
+    ''')
 
-        st.table(pd.read_pickle('./compressed/fro_df.pkl'))
+    st.table(pd.read_pickle('./compressed/fro_df.pkl'))
 
-        st.write('''
-    Obviously Frozen's best match is with itself... after that we would recommend Mulan, then Batman Returns, then The Shining, which intuitively is probably the order we would expect. My recommender works just like this, but with millions of reviewers instead of just 3!
-        ''')
+    st.write('''
+Obviously Frozen's best match is with itself... after that we would recommend Mulan, then Batman Returns, then The Shining, which intuitively is probably the order we would expect. My recommender works just like this, but with millions of reviewers instead of just 3!
+    ''')
