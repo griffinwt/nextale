@@ -171,9 +171,9 @@ Try it out for yourself:
 elif page == 'How It Works':
 
     st.subheader('How It Works')
-        st.write('''
-    This model finds the similarity between products by measuring the angle between their vectors created from review grades by customers. Here is an example of what the initial reviewer by product matrix looked like on a small scale (with artificial ratings):
-        ''')
+    st.write('''
+This model finds the similarity between products by measuring the angle between their vectors created from review grades by customers. Here is an example of what the initial reviewer by product matrix looked like on a small scale (with artificial ratings):
+    ''')
 
     st.table(pd.read_pickle('./compressed/sample_pivot.pkl'))
 
