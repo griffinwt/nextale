@@ -35,7 +35,7 @@ def make_recs_new(query, wout=''):  #need to set lookup and recommender global v
             top10_prods = []
             num_prod_revs = []
             avg_prod_stars = []
-            for key in list(recommender[q].keys())[1:11]:
+            for key in list(recommender[q][1:11]:
                 top10_prods.append(key)
                 num_prod_revs.append(round(lookup[lookup['product_title']==key]['tot_prod_reviews'].mean()))
                 avg_prod_stars.append(round(lookup[lookup['product_title']==key]['avg_prod_stars'].mean(), 2))
@@ -50,7 +50,7 @@ def make_recs_new(query, wout=''):  #need to set lookup and recommender global v
             
             wout = wout.lower() #lowercase
             filtered_query = [] #make empty list
-            for key in list(recommender[q].keys()):
+            for key in list(recommender[q]:
                 if wout not in key.lower(): #check if avoided keyword is in results
                     filtered_query.append(key)
             top10_prods = []
