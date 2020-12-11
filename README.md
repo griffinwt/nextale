@@ -8,7 +8,7 @@
 
 ## Problem Statement
 
-Recommendation systems are ubiquitous in today's attention-driven online environment, whether used by an online retailer to recommend similar products or a media application to prompt binge-watching. These systems use a combination of well known and proprietary techniques to engage customers with customized recommendations based on their previous preference. In this project, I created a relatively simple version of one of these recommenders using customer reviews between 1995-2015 provided by Amazon. I specifically looked at products in the categories of books, movies, and video games. To reflect the narrative element in each of these products, I titled my project "Nextale". It is a tool to assist the user in finding their "next tale" based on something they enjoyed previously.
+Recommendation systems are ubiquitous in today's attention-driven online environment, whether used by an online retailer to recommend similar products or a media application to prompt binge-watching. These systems use a combination of well known and proprietary techniques to engage customers with customized recommendations based on their previous preference. In this project, I created a relatively simple version of one of these recommenders using customer reviews between 1995-2015 provided by Amazon. I specifically looked at products in the categories of books, movies, and video games. To reflect the narrative element in each of these products, I titled my project "Nextale". As a unique feature, I also added an exclusion search box so that a user can filter their recommendations even further by removing results in which they're personally disinterested. It is a tool to assist the user in finding their "next tale" based on something they enjoyed previously.
 
 ---
 
@@ -66,11 +66,13 @@ Check it out for yourself!
 
 [Nextale App - hosted by Streamlit](https://share.streamlit.io/griffinwt/nextale/main/Nextale_Streamlit.py)
 
+*A note on the myriad jupyter notebooks connected to this project - in most cases I did my preliminary data wrangling on the video game set because it was the smallest, and then used what I learned to build functions that I applied to the larger movie and video game sets. This means that most of my work, particularly in the "Cleaning" and "EDA" files is going to be shown in the video game related notebooks.*
+
 ---
 
 ## Next Steps
 
-- My search mechanism is still fairly rudimentary - I'd like to make it more exact, either by adding keyword searches (perhaps over the review text) or even providing a drop down that offers suggestions of products as users type; I'd also to like to add additional paramaters like genre or author/actor/game company to help users refine their searches
+- My search mechanism is still fairly rudimentary - I'd like to make it more exact, either by adding keyword searches (perhaps over the review text) or even providing a drop down that offers suggestions of products as users type; I'd also to like to add additional parameters like genre or author/actor/game company to help users refine their searches
 - Because I used a systematic, function-based approach, my cleaning and recommender creation processes would easily generalize to other categories of the Amazon Review dataset. With more time and less memory constraints, I could easily expand my recommender to encompass other types of goods
 - The Natural Language Processing I performed in this project was somewhat shallow as it only contributed to a tangental feature; with more time, I believe I could glean greater insights comparing user review text, combining it either by star rating, product, average product star rating, or by similar products; I'd also be interested in building a classifier to see how accurately I could predict verified purchases based on review text
 - As the common refrain goes, more data would always be better! My model would be more robust if I had the opportunity to add more recent reviews (post-2015) to expand it in both product range and total review volume
