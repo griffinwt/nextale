@@ -64,7 +64,7 @@ To overcome this, I used my recommender systems to create dictionaries which sto
 
 Check it out for yourself!
 
-[Nextale App - hosted by Streamlit](#https://share.streamlit.io/griffinwt/nextale/main/Nextale_Streamlit.py)
+[Nextale App - hosted by Streamlit](https://share.streamlit.io/griffinwt/nextale/main/Nextale_Streamlit.py)
 
 ---
 
