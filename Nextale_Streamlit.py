@@ -92,7 +92,7 @@ Try it out for yourself:
 
     lookup = pd.read_pickle('./compressed/books_look_p3')
 
-    with open('./compressed/new_books_rec.pkl', 'rb') as f:
+    with open('./compressed/books_rec_small.pkl', 'rb') as f:
         recommender = pickle.load(f)
 
     query = st.text_input('Please enter a word or phrase to search: ', max_chars=50)
@@ -108,7 +108,7 @@ Try it out for yourself:
         st.table(recommendation) #if result is a df, show it
 
     st.write('''
-    *in order to expedite search results and save memory, this application works off of a truncated version of the full recommender; for each product, the 100 most similar products are stored in memory. This means that theoretically, if a user's "exclusion" search term is too broad, less than 10 similar products may be available which would compromise the resulting printout. While possible, this error has never been observed in any tests of the application to date.
+    *in order to expedite search results and save memory, this application works off of a truncated version of the full recommender; for each product, the 50 most similar products are stored in memory. This means that theoretically, if a user's "exclusion" search term is too broad, less than 10 similar products may be available which would compromise the resulting printout. While possible, this error has never been observed in any tests of the application to date.
     ''')
 
 
@@ -123,36 +123,9 @@ Try it out for yourself:
 
     lookup = pd.read_pickle('./compressed/movies_look_p3')
 
-    recommender = bz2.BZ2File('./compressed/movies_rec_c.pbz2')
-    recommender = cPickle.load(recommender)
-
-    query = st.text_input('Please enter a word or phrase to search: ', max_chars=50)
-
-    wout = st.text_input('If you would like to exclude a term from your results, please enter it here: ', max_chars=50)
-
-    searched, recommendation = make_recs_new(query, wout)
-
-    if type(recommendation) == str:
-        st.write(recommendation) #if result is a string, print it
-    else:
-        st.write(searched) #show searched term
-        st.table(recommendation) #if result is a df, show it
-
-    st.write('''
-    *in order to expedite search results and save memory, this application works off of a truncated version of the full recommender; for each product, the 100 most similar products are stored in memory. This means that theoretically, if a user's "exclusion" search term is too broad, less than 10 similar products may be available which would compromise the resulting printout. While possible, this error has never been observed in any tests of the application to date.
-    ''')
-
-elif page =='Video Games':
-    st.subheader('Video Games')
-    st.write('''
-The video game recommender was built from 1,648,136 reviews consisting of 979,917 unique customers and 15,938 unique products.
-
-Try it out for yourself:
-    ''')
-
-    lookup = pd.read_pickle('./compressed/vg_look_p3')
-
-    with open('./compressed/new_vg_rec.pkl', 'rb') as f:
+    #recommender = bz2.BZ2File('./compressed/movies_rec_c.pbz2')
+    #recommender = cPickle.load(recommender)
+    with open('./compressed/movies_rec_small.pkl', 'rb') as f:
         recommender = pickle.load(f)
 
     query = st.text_input('Please enter a word or phrase to search: ', max_chars=50)
@@ -168,7 +141,36 @@ Try it out for yourself:
         st.table(recommendation) #if result is a df, show it
 
     st.write('''
-    *in order to expedite search results and save memory, this application works off of a truncated version of the full recommender; for each product, the 100 most similar products are stored in memory. This means that theoretically, if a user's "exclusion" search term is too broad, less than 10 similar products may be available which would compromise the resulting printout. While possible, this error has never been observed in any tests of the application to date.
+    *in order to expedite search results and save memory, this application works off of a truncated version of the full recommender; for each product, the 50 most similar products are stored in memory. This means that theoretically, if a user's "exclusion" search term is too broad, less than 10 similar products may be available which would compromise the resulting printout. While possible, this error has never been observed in any tests of the application to date.
+    ''')
+
+elif page =='Video Games':
+    st.subheader('Video Games')
+    st.write('''
+The video game recommender was built from 1,648,136 reviews consisting of 979,917 unique customers and 15,938 unique products.
+
+Try it out for yourself:
+    ''')
+
+    lookup = pd.read_pickle('./compressed/vg_look_p3')
+
+    with open('./compressed/vg_rec_small.pkl', 'rb') as f:
+        recommender = pickle.load(f)
+
+    query = st.text_input('Please enter a word or phrase to search: ', max_chars=50)
+
+    wout = st.text_input('If you would like to exclude a term from your results, please enter it here: ', max_chars=50)
+
+    searched, recommendation = make_recs_new(query, wout)
+
+    if type(recommendation) == str:
+        st.write(recommendation) #if result is a string, print it
+    else:
+        st.write(searched) #show searched term
+        st.table(recommendation) #if result is a df, show it
+
+    st.write('''
+    *in order to expedite search results and save memory, this application works off of a truncated version of the full recommender; for each product, the 50 most similar products are stored in memory. This means that theoretically, if a user's "exclusion" search term is too broad, less than 10 similar products may be available which would compromise the resulting printout. While possible, this error has never been observed in any tests of the application to date.
     ''')
 
 elif page == 'How It Works':
